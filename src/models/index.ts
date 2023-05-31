@@ -1,8 +1,8 @@
-
 export interface Post {
-    id: number
-    title: string
-    subtitle?: string
-    body: string
-    author: string
+  id: string;
+  title: string;
+  subtitle?: string;
+  body: string;
 }
+
+export type NewPost = Omit<Post, "id">;
