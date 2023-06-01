@@ -7,6 +7,7 @@ import { LOCAL_STORAGE_KEY } from './services/posts.service.ts'
 import initialPosts from "./services/posts.json"
 import { useEffect } from 'react'
 import PostPage from './pages/posts/PostPage.tsx'
+import EditPostPage from './pages/posts/EditPostPage.tsx'
 
 const loadInitalPosts = () => {
   const data = localStorage.getItem(LOCAL_STORAGE_KEY);
@@ -28,6 +29,7 @@ function App() {
         <Route path="posts" element={<PostListPage />} />
         <Route path="/post/create" element={<CreatePostPage />} />
         <Route path="/post/:id" element={<PostPage />} />
+        <Route path="/post/:id/edit" element={<EditPostPage />} />
         <Route path="contact" element={<ContactPage />} />
         <Route path="*" element={<NotFound />} />
       </Route>
