@@ -3,11 +3,11 @@ import './App.css'
 import Home from './pages/HomePage'
 import MainMenu from './components/MainMenu'
 import { AboutPage, ContactPage, CreatePostPage, PostListPage } from './pages'
-import { LOCAL_STORAGE_KEY } from './services/posts.service.ts'
+import { LOCAL_STORAGE_KEY } from './services/posts.service'
 import initialPosts from "./services/posts.json"
 import { useEffect } from 'react'
-import PostPage from './pages/posts/PostPage.tsx'
-import EditPostPage from './pages/posts/EditPostPage.tsx'
+import PostPage from './pages/posts/PostPage'
+import EditPostPage from './pages/posts/EditPostPage'
 
 const loadInitalPosts = () => {
   const data = localStorage.getItem(LOCAL_STORAGE_KEY);

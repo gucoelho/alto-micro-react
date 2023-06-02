@@ -4,6 +4,16 @@
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
     "module": "ESNext",
     "skipLibCheck": true,
+    "paths": {
+      "@components/*": ["./src/components/*"],
+      "@pages/*": ["./src/pages/*"],
+      "@services/*": ["./src/services/*"],
+      "@models/*": ["./src/models/*"],
+      "@models": ["./src/models"],
+      "@builders/*": ["./tests/builders/*"],
+      "@tests/*": ["./tests/*"],
+      "@/*": ["./src/*"],
+    },
 
     /* Bundler mode */
     "moduleResolution": "bundler",

@@ -9,17 +9,20 @@ const SearchBar = () => {
     const [value, setValue] = useState("")
     const navigate = useNavigate()
 
-    return <div className="flex flex-col justify-self-end relative">
-        <label className="uppercase text-xs font-bold">
+    return <div data-testid="search-bar" className="flex flex-col justify-self-end relative">
+        <label className="uppercase text-xs font-bold" aria-labelledby="search" htmlFor="search">
             Search the site
         </label>
 
         <div className="flex">
             <input
+                id="search"
+                name="search"
                 className="placeholder:text-slate-400 placeholder:uppercase block bg-black w-full py-2 px-1 focus:outline-none focus:border-amber-500 focus:ring-amber-500 focus:ring-1 sm:text-sm text-white mr-1"
                 value={value}
                 onChange={v => setValue(v.target.value)}
-                placeholder="Enter keyword" type="text" name="search" />
+                placeholder="Enter keyword" 
+                type="text" />
             <Button>Search</Button>
         </div>
 
@@ -29,6 +32,7 @@ const SearchBar = () => {
                     <div
                         key={post.id}
                         className="hover:font-bold cursor-pointer normal-case"
+                        role="listitem"
                         onClick={() => {
                             setValue("")
                             navigate(`/post/${post.id}`)

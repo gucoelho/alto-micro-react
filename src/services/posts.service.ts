@@ -5,7 +5,7 @@ export const LOCAL_STORAGE_KEY = "all-posts";
 
 const getAllPosts = (): Post[] => {
   const data = localStorage.getItem(LOCAL_STORAGE_KEY);
-  return data ? (JSON.parse(data) as Post[]) : ([] as Post[]);
+  return data ? (JSON.parse(data) as Post[]) : [];
 };
 
 const getPostById = (id: string): Post | undefined => {

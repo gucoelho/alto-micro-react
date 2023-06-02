@@ -1,23 +1,40 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import SearchBar from "./SearchBar";
-import { describe, expect, test, vi } from 'vitest'
+import { Mock, describe, expect, test, vi } from 'vitest'
+import { getAllPosts } from '@services/posts.service';
+import { PostBuilder } from '@builders/post.builder'
+import * as router from "react-router-dom";
 
-// Mock the useNavigate hook
+vi.mock("@services/posts.service",  () => ({
+  getAllPosts: vi.fn()
+}))
+
 vi.mock("react-router-dom", () => ({
-  useNavigate: () => vi.fn(),
+  useNavigate: () => vi.fn,
 }));
 
+const mockNavigate = vi.fn()
+const getAllPostsMock = getAllPosts as Mock
+const mockPosts = new PostBuilder().generate(5)
+
+getAllPostsMock.mockReturnValue(mockPosts)
+
 describe("SearchBar", () => {
+
+  beforeEach(() => vi.spyOn(router, 'useNavigate').mockImplementation(() => mockNavigate))
+
+  afterEach(() => vi.clearAllMocks())
+
   test("renders without errors", () => {
     render(<SearchBar />);
-    // Assert that the component renders without throwing any errors
+
     expect(screen.getByLabelText("Search the site")).toBeInTheDocument();
   });
 
   test("input field renders with correct initial state", () => {
     render(<SearchBar />);
     const inputElement = screen.getByPlaceholderText("Enter keyword");
-    // Assert that the input field has the correct placeholder and empty value
+
     expect(inputElement).toBeInTheDocument();
     expect(inputElement).toHaveValue("");
   });
@@ -26,38 +43,53 @@ describe("SearchBar", () => {
     render(<SearchBar />);
     const inputElement = screen.getByPlaceholderText("Enter keyword");
     fireEvent.change(inputElement, { target: { value: "example" } });
-    // Assert that the value in the input field is updated correctly
+
     expect(inputElement).toHaveValue("example");
   });
 
-  test("list of posts is filtered correctly", () => {
+  test("list of posts is filtered correctly", async () => {
+    const exptectedPost = new PostBuilder().withTitle("Example Post Title").generate()
+
+    getAllPostsMock.mockReturnValue([...mockPosts, exptectedPost])
     render(<SearchBar />);
     const inputElement = screen.getByPlaceholderText("Enter keyword");
-    fireEvent.change(inputElement, { target: { value: "example" } });
-    // Assert that the list of posts is filtered correctly based on the input value
-    const filteredPosts = screen.getAllByRole("listitem");
-    expect(filteredPosts.length).toBe(1); // Assuming only one post matches the filter
-    expect(filteredPosts[0]).toHaveTextContent("Example Post Title");
+    fireEvent.change(inputElement, { target: { value: "Example" } });
+
+    await waitFor(() => {
+      const filteredPosts = screen.getAllByRole("listitem");
+      expect(filteredPosts.length).toBe(1);
+      expect(filteredPosts[0]).toHaveTextContent("Example Post Title");
+    })
   });
 
   test("clicking on a post triggers navigation", () => {
-    const navigate = vi.fn();
+    const mockPost = new PostBuilder().withId("123").withTitle("Example Post Title").generate()
+
+    getAllPostsMock.mockReturnValue([...mockPosts, mockPost])
+    //const mockNavigate = vi.spyOn(router, 'useNavigate').mockImplementation(vi.fn)
+
     render(<SearchBar />);
+
     const inputElement = screen.getByPlaceholderText("Enter keyword");
-    fireEvent.change(inputElement, { target: { value: "example" } });
+    fireEvent.change(inputElement, { target: { value: "Example" } });
     const postElement = screen.getByText("Example Post Title");
     fireEvent.click(postElement);
-    // Assert that the navigate function is called with the correct path
-    expect(navigate).toHaveBeenCalledWith("/post/123"); // Assuming the post ID is 123
+
+    expect(mockNavigate).toBeCalledWith("/post/123");
   });
 
   test("state value is reset when a post is clicked", () => {
+    const mockPost = new PostBuilder().withId("123").withTitle("Example Post Title").generate()
+    getAllPostsMock.mockReturnValue([...mockPosts, mockPost])
+
+    vi.spyOn(router, 'useNavigate').mockImplementation(vi.fn)
+
     render(<SearchBar />);
     const inputElement = screen.getByPlaceholderText("Enter keyword");
-    fireEvent.change(inputElement, { target: { value: "example" } });
+    fireEvent.change(inputElement, { target: { value: "Example" } });
     const postElement = screen.getByText("Example Post Title");
     fireEvent.click(postElement);
-    // Assert that the component's state value is reset to an empty string
+
     expect(inputElement).toHaveValue("");
   });
 });
