@@ -1,6 +1,6 @@
 ## Summary
 
-Project started with Vite, tested with Vitest + @testing-library and styled with TalwindCSS
+Project started with Vite, tested with Vitest + @testing-library and styled with TailwindCSS
 
 ## Requirements
 
