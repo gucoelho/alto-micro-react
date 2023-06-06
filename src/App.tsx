@@ -1,13 +1,14 @@
-import { Link, Outlet, Route, Routes } from 'react-router-dom'
 import './App.css'
+
+import { Route, Routes } from 'react-router-dom'
 import Home from './pages/HomePage'
-import MainMenu from './components/MainMenu'
-import { AboutPage, ContactPage, CreatePostPage, PostListPage } from './pages'
+import { AboutPage, ContactPage, CreatePostPage, EditPostPage, PostListPage, PostPage } from '@pages'
 import { LOCAL_STORAGE_KEY } from './services/posts.service'
 import initialPosts from "./services/posts.json"
 import { useEffect } from 'react'
-import PostPage from './pages/posts/PostPage'
-import EditPostPage from './pages/posts/EditPostPage'
+import Layout from './templates/Layout'
+import NotFound from '@pages/NotFound'
+
 
 const loadInitalPosts = () => {
   const data = localStorage.getItem(LOCAL_STORAGE_KEY);
@@ -37,24 +38,6 @@ function App() {
   )
 }
 
-const Layout = () => {
-  return (
-    <div className="md:px-0 xl:px-48">
-      <MainMenu />
-      <Outlet />
-    </div>
-  );
-}
 
-function NotFound() {
-  return (
-    <div>
-      <h2>Nothing to see here!</h2>
-      <p>
-        <Link to="/">Go to the home page</Link>
-      </p>
-    </div>
-  );
-}
 
 export default App

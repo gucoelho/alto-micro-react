@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom"
-import BlogLogo from "./BlogLogo"
-import SearchBar from "./SearchBar"
+import BlogLogo from "@components/atoms/BlogLogo"
+import SearchBar from "@components/molecules/SearchBar"
 
 const MainMenu = () => {
     return (
-        <header className="flex items-center border-solid border-b-2 border-black w-full py-2 px-6">
+        <header className="flex items-center border-solid border-b-2 border-black w-full py-2">
             <BlogLogo />
             <ul className="list-none flex gap-2 font-bold grow">
                 <Link to="/">Home</Link>

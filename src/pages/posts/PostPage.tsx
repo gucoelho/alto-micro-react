@@ -1,20 +1,26 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { getPostById } from "../../services/posts.service";
 import { useEffect, useState } from "react";
-import { Post } from "../../models";
-import Button from "../../components/Button";
+import { Post } from "@models";
+import { getPostById } from "@services/posts.service";
+import { Button } from "@components/atoms";
 
 const PostPage = () => {
     const { id } = useParams();
     const [post, setPost] = useState<Post | undefined>()
+    const [loading, setLoading] = useState<boolean>(true)
     const navigate = useNavigate()
 
     useEffect(() => {
+        setLoading(true)
         if (id) {
             const postInStorage = getPostById(id)
             setPost(postInStorage)
         }
+        setLoading(false)
     }, [id])
+
+
+    if (loading) return <div>Loading...</div>
 
     if (!post) return <div>Post not found</div>
 

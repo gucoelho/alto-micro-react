@@ -4,6 +4,7 @@ import HomePage from "./HomePage";
 import PostListPage from "./posts/PostListPage";
 import PostPage from "./posts/PostPage";
 import CreatePostPage from "./posts/CreatePostPage";
+import EditPostPage from "./posts/EditPostPage";
 
 export {
   AboutPage,
@@ -12,4 +13,5 @@ export {
   PostListPage,
   PostPage,
   CreatePostPage,
+  EditPostPage,
 };

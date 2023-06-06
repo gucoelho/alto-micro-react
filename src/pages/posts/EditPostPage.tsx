@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import Button from "../../components/Button";
-import { editPost, getPostById } from "../../services/posts.service";
-import { Post } from "../../models";
-
+import { Post } from "@models";
+import { editPost, getPostById } from "@services/posts.service";
+import CreateOrEditForm from "@components/molecules/CreateOrEditForm";
 
 const EditPostPage = () => {
     const navigate = useNavigate();
@@ -17,32 +16,20 @@ const EditPostPage = () => {
         }
     }, [id])
 
-    const submit = () => {
-        if (post) editPost(post)
+    const handleChange = <P extends keyof Post>(prop: P, value: Post[P]) => {
+        if (post) setPost({ ...post, [prop]: value })
+    }
 
+    const submit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        if (post) editPost(post)
         navigate(`/post/${id}`)
     }
 
     if (!post) return <div>Loading...</div>
 
 
-    return <form onSubmit={submit}>
-        <div className="flex flex-col">
-            <label>Title</label>
-            <input name="title" value={post.title} onChange={v => setPost({ ...post, title: v.target.value })} />
-        </div>
-
-        <div className="flex flex-col">
-            <label>Subtitle</label>
-            <input name="subtitle" value={post.subtitle} onChange={v => setPost({ ...post, subtitle: v.target.value })} />
-        </div>
-
-        <div className="flex flex-col">
-            <label>Body</label>
-            <textarea name="body" value={post.body} onChange={v => setPost({ ...post, body: v.target.value })} />
-        </div>
-        <Button>Create</Button>
-    </form>
+    return <CreateOrEditForm post={post} onSubmit={submit} onChange={handleChange} />
 }
 
 export default EditPostPage

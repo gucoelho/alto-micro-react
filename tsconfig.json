@@ -6,6 +6,7 @@
     "skipLibCheck": true,
     "paths": {
       "@components/*": ["./src/components/*"],
+      "@pages": ["./src/pages"],
       "@pages/*": ["./src/pages/*"],
       "@services/*": ["./src/services/*"],
       "@models/*": ["./src/models/*"],

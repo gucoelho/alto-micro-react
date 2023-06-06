@@ -5,7 +5,7 @@ import { getAllPosts } from '@services/posts.service';
 import { PostBuilder } from '@builders/post.builder'
 import * as router from "react-router-dom";
 
-vi.mock("@services/posts.service",  () => ({
+vi.mock("@services/posts.service", () => ({
   getAllPosts: vi.fn()
 }))
 
